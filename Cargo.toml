@@ -1,0 +1,38 @@
+[package]
+name = "system_monitor"
+version = "0.1.0"
+edition = "2021"
+description = "PULSE — minimal low-overhead Windows system monitor"
+license = "MIT"
+
+[[bin]]
+name = "Pulse"
+path = "src/main.rs"
+
+[dependencies]
+crossterm = "0.28"
+nvml-wrapper = "0.10"
+ratatui = "0.29"
+serde = { version = "1", features = ["derive"] }
+sysinfo = "0.33"
+wmi = "0.14"
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.58", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Console",
+    "Win32_System_IO",
+    "Win32_System_Ioctl",
+] }
+
+[build-dependencies]
+winres = "0.1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+strip = true
+panic = "abort"
